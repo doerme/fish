@@ -26,7 +26,8 @@
                 </transition-group>
             </div>
             <div class="my-jinbi my-zs" @click="goCenter">
-                <span><i id="js-dy-zs">{{ myZs }}</i></span>
+                <!-- <span><i id="js-dy-zs">{{ myZs }}</i></span> -->
+                <span><i id="js-dy-zs">{{ 0 }}</i></span>
             </div>
             <!-- 规则  -->
             <router-link tag="div" to="/rule" class="butn-rule-home"></router-link>

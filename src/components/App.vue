@@ -586,45 +586,58 @@ export default {
             $('.yuer').show();
             // 出杆的按钮背景动画
             self.progressChugan();
-            const res = await this.$store.dispatch('catchFish', {
-                nums: self.currentBetting / 100,
-                type: 1
-            })
-            console.log(`[j] out after catch fish`, res)
-            // var res = {
-            //     balance:100,
-            //     data:{
-            //         fish:[
-            //             {id:2,name:'test',gold:5},
-            //             {id:2,name:'test',gold:.3},
-            //         ]
-            //     },
-            //     code:0,
-            //     totalGold: 5.3
-            // }
-            // setTimeout(function(){ //定时器 防止鱼竿还没下来 鱼就跑来了
-            ajaxResponseTime = +new Date();
-            self.timeGetedTotal = Math.ceil(Number(res.JB) * 100);
-            self.currentTotalGetedZs = Math.ceil(Number(res.ZS) * 100);
-            self.currentTotalGeted = Math.ceil(Number(res.totalGold) * 100);
-            if (res.code == 200) {
-                self.lotteryId = res.data.fish;
-                self.caishenCanShow = res.isCaiShen;
-            } else {
-                self.lotteryId = [];
+            try {
+
+
+                const res = await this.$store.dispatch('catchFish', {
+                    nums: self.currentBetting / 100,
+                    type: 1
+                })
+                console.log(`[j] out after catch fish`, res)
+                // var res = {
+                //     balance:100,
+                //     data:{
+                //         fish:[
+                //             {id:2,name:'test',gold:5},
+                //             {id:2,name:'test',gold:.3},
+                //         ]
+                //     },
+                //     code:0,
+                //     totalGold: 5.3
+                // }
+                // setTimeout(function(){ //定时器 防止鱼竿还没下来 鱼就跑来了
+                ajaxResponseTime = +new Date();
+                self.timeGetedTotal = Math.ceil(Number(res.JB) * 100);
+                self.currentTotalGetedZs = Math.ceil(Number(res.ZS) * 100);
+                self.currentTotalGeted = Math.ceil(Number(res.totalGold) * 100);
+                if (res.code == 200) {
+                    self.lotteryId = res.data.fish;
+                    self.caishenCanShow = res.isCaiShen;
+                    self.isGetedResult = true;
+                    // self.caishenCanShow = true
+                } else {
+                    self.lotteryId = [];
+                    Toast({
+                        message: res.msg,
+                        position: 'top',
+                        duration: 2000,
+                        className: 'chugan-toast'
+                    });
+                }
+                if (self.lotteryId.length) {
+                    for (var i = 0, len = self.lotteryId.length; i < len; i++) {
+                        self.lotteryFishList.push(generateFish(self.lotteryId[i].id, Number(self.lotteryId[i].gold) * 100, self.lotteryId[i].name));
+                    }
+                }
+                // },2000)
+            } catch (e) {
                 Toast({
-                    message: res.msg,
+                    message: '您的网速不给力哦~',
                     position: 'top',
                     duration: 2000,
                     className: 'chugan-toast'
                 });
             }
-            if (self.lotteryId.length) {
-                for (var i = 0, len = self.lotteryId.length; i < len; i++) {
-                    self.lotteryFishList.push(generateFish(self.lotteryId[i].id, Number(self.lotteryId[i].gold) * 100, self.lotteryId[i].name));
-                }
-            }
-            // },2000)
 
 
         },

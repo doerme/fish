@@ -46,8 +46,17 @@ const actions = {
         commit('setUserInfo', resUserInfo)
         console.log(`[j] after ini`, state)
     },
-    async getUserInfo({ commit, state }, data) {
-
+    async catchFish({ commit, state }, data) {
+        console.log(`[j] catchFish`, state, data)
+        const cres = await apiHttp({
+            url: 'api/game/fish/catch_fish',
+            method: 'POST',
+            headers: {
+                token: state.initData.data.userinfo.token
+            },
+            data
+        })
+        return cres
     },
 }
 

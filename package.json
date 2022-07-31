@@ -6,13 +6,14 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "watch":"webpack --watch --config ./build/webpack.prod.conf.js",
+    "watch": "webpack --watch --config ./build/webpack.prod.conf.js",
     "build": "node build/build.js",
     "task-build": "npm run build",
     "precopy": "cp -R /Users/linz/Documents/linz/linz_projects/欢乐钓鱼web/hldy /Users/linz/Downloads/欢乐钓鱼web",
     "copy": "cp -R /Users/linz/Documents/linz/linz_projects/欢乐钓鱼web/src /Users/linz/Downloads/欢乐钓鱼web"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "copy-webpack-plugin": "^4.0.1",
     "vue": "^2.1.0",
     "vue-router": "^2.0.3",

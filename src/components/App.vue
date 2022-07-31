@@ -13,13 +13,13 @@
             </transition>
             <!-- 个人信息  -->
             <div class="my-head" @click="goCenter">
-                <img :src="head" alt="">
+                <img :src="userInfo.data.avatar" alt="">
 
-                <p class="nickname"><i>{{ nickname }}</i> </p>
+                <p class="nickname"><i>{{ userInfo.data.nickname }}</i> </p>
             </div>
             <!-- 我的金币  -->
             <div class="my-jinbi" @click="goCenter">
-                <span><i id="js-dy-jinbi">{{ myJinbi }}</i></span>
+                <span><i id="js-dy-jinbi">{{ userInfo.data.wallet.coupon }}</i></span>
                 <transition-group tag="div" name="jinbi" class="jinbi-group">
                     <p v-for="(item, index) in moneyGroup" v-bind:key="index">
                     </p>
@@ -98,7 +98,8 @@
         <div class="tips-mask" @click="hideBettingTips" v-show="bettingTipsShow"></div>
         <div class="bottom-tips" v-show="bettingTipsShow">
             <p v-for="item in bettingJinbi" @click="selectBetting" :betting="item"> <img :src="jinbiSeleted"
-                    class="icon-seleted" v-show="item == currentBetting"> <img :src="jinbi" class="icon-jinbi"> {{ item }}
+                    class="icon-seleted" v-show="item == currentBetting"> <img :src="jinbi" class="icon-jinbi"> {{ item
+                    }}
             </p>
         </div>
         <!-- 宝箱  -->
@@ -161,12 +162,16 @@ import jinbi from '../assets/jinbi-3.png';
 import jinbiSeleted from '../assets/jinbi-seleted.png';
 import chuganTxt from '../assets/chugan-txt.png';
 import plus from '../assets/plus.png';
-import {isDev} from '../config/index'
+// import {caishen as caishenDialog} from './util/caishen.vue'
+import { isDev, apihost } from '../config/index'
+// import apiHttp from '../rpc/apiHttp'
+// import store from '../store/index'
 
 import {
     MessageBox,
     Toast
 } from 'mint-ui';
+import { mapState } from 'vuex'
 
 let yuganClass = "yugan-block";
 var lotteryId = [];
@@ -289,6 +294,16 @@ export default {
         }
     },
     computed: {
+        ...mapState({
+            initData: state => {
+                console.log(`[j] initdata mapState state`, state)
+                return state.datastore.initData
+            },
+            userInfo: state => {
+                console.log(`[j] userInfo mapState state`, state)
+                return state.datastore.userInfo
+            }
+        }),
         lotteryTipsClass() { //钓鱼的样式
             if (this.currentGetedFishList.length > 1) {
                 return 'page-lottery more'
@@ -351,25 +366,28 @@ export default {
         this.generateWave();
         // 加载进度 假的
         this.allImgLoaded();
-        self.ajaxGetUserInfo();
+        // self.ajaxGetUserInfo();
         self.setRate();
-        this.caishenDialog = caishenDialog({
-            error: function (res) {
-                //接口报错情况
-                Toast({
-                    message: res.msg,
-                    position: 'top',
-                    duration: 2000,
-                    className: 'chugan-toast'
-                });
-                self.caishenDialog.close();
-            },
-            close: function () {
-                // 弹窗关闭时执行代码
-                self.caishenCanShow = false;
-            }
-        });
+        // this.caishenDialog = caishenDialog({
+        //     error: function (res) {
+        //         //接口报错情况
+        //         Toast({
+        //             message: res.msg,
+        //             position: 'top',
+        //             duration: 2000,
+        //             className: 'chugan-toast'
+        //         });
+        //         self.caishenDialog.close();
+        //     },
+        //     close: function () {
+        //         // 弹窗关闭时执行代码
+        //         self.caishenCanShow = false;
+        //     }
+        // });
         // self.noticeLoop();
+        console.log(`[j] call go`)
+        this.$store.dispatch('initData')
+        // this.$store.dispatch('getUserInfo')
     },
     methods: {
         allImgLoaded() {
@@ -1238,6 +1256,7 @@ export default {
     width: 408px;
     height: 108px;
     border-radius: 54px;
+    object-fit: cover;
 }
 
 .bg-content .my-head:before {

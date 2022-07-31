@@ -2,14 +2,16 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import mygames from './mygame'
+import datastore from './datastore'
 
 Vue.use(Vuex)
 
 
 
 const store = new Vuex.Store({
-    modules:{
-        mygames
+    modules: {
+        mygames,
+        datastore
     }
 })
 

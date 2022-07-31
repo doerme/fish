@@ -4,7 +4,7 @@ import App from './components/App'
 import router from './router'
 
 import 'mint-ui/lib/style.css'
-// import store from './store'
+import store from './store'
 
 import common from './components/' //加载公共组件
 import util from './util/' //公共方法
@@ -20,14 +20,16 @@ Vue.component(Cell.name, Cell)
 
 
 Object.keys(common).forEach((key) => {
+    
     var name = key.replace(/(\w)/, (v) => v.toUpperCase()) //首字母大写
     Vue.component(`common${name}`, common[key])
 })
-
 const app = new Vue({
     router,
-    // store,
+    store,
     ...App
 })
+console.log(`[j] app`, app)
+
 
 export { app }
